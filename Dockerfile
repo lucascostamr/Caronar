@@ -1,7 +1,9 @@
-# syntax=docker/dockerfile:1
-FROM node:current-alpine3.18
+FROM node:latest
 WORKDIR /app
-COPY . /app/
-# RUN npm run install:clean
-EXPOSE 3001 3000
-CMD npm run install:clean
+COPY package.json package-lock.json* ./
+RUN npm install --no-optional && npm cache clean --force
+COPY . .
+EXPOSE 3000 3001
+CMD ["npm", "start"] 
+
+# && cd /server && npm install && npm start
