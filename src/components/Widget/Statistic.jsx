@@ -7,7 +7,7 @@ Chart.register();
 
 function Statistic({ ...props }) {
   const data = {
-    labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli"],
+    labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
     datasets: [
       {
         label: "2023",
