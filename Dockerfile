@@ -8,8 +8,10 @@ cd ./server/ &&\
 npm install &&\
 npm cache clean --force &&\
 apk add git &&\
-git init &&\
-git branch -m main
+apk openssh
 
 EXPOSE 3000 3001
-CMD ["npm", "start"]
+CMD \
+    git init&&\
+    git branch -m&&\
+    npm start
