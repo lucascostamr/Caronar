@@ -10,7 +10,7 @@ services:
       - ./carona.sql:/docker-entrypoint-initdb.d/carona.sql
 
   app:
-    build: .
+    build: https://github.com/DreaMagici4n/Caronar.git
     ports:
       - "3001:3001"
       - "3000:3000"
