@@ -2,11 +2,11 @@ const express = require("express");
 const bd = require("./database/connection");
 const cors = require("cors");
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
 }));
 
 app.get("/api/user/:id", (req, res) => {

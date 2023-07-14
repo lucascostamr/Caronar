@@ -1,9 +1,6 @@
-FROM node:latest
+FROM node:current-alpine3.18
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install --no-optional && npm cache clean --force
 COPY . .
+RUN npm install --no-optional && cd ./server/ && npm install && npm cache clean --force && apk add git
 EXPOSE 3000 3001
-CMD ["npm", "start"] 
-
-# && cd /server && npm install && npm start
+CMD ["npm", "start"]
