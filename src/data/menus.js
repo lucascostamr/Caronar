@@ -28,7 +28,7 @@ const initMenu = [
   },
   
   {
-    label: 'Tabel dan Form'
+    label: 'Histórico'
   },
   {
     label: "Form",
@@ -36,7 +36,7 @@ const initMenu = [
     icon: faWindows,
   },
   {
-    label: "Tabel",
+    label: "Corridas",
     path: "/table",
     icon: faTable,
   },

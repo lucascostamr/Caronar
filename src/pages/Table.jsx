@@ -3,21 +3,8 @@ import Navbar from "../components/Navbar";
 import UserTable from "./UserTable";
 
 function Table() {
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(false);
   const [data, setData] = useState([]);
-  
-  useEffect(() => {
-    fetch('http://localhost:3001/api/passageiro/555.555.555-55/historico')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-        setLoading(false);
-      });
-  }, []);
 
   const dataHeader = [
     {
@@ -29,18 +16,46 @@ function Table() {
       label: "Hora",
     },
     {
+      key: "Origem",
+      label: "Origem",
+    },
+    {
       key: "Destino",
       label: "Destino",
     },
     {
-      key: "Origem",
-      label: "Origem",
+      key: "NomeMotorista",
+      label: "Motorista",
     },
     {
       key: "Preco",
       label: "Preço",
     }
   ];
+  
+
+  const formatData = (date) => {
+    const splitDateTime = date.split("T");
+    return splitDateTime[0];
+  };
+
+  const cpf = '111.111.111-11';
+
+  useEffect(() => {
+    const fetchUserHistory = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/${cpf}/historico`);
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error('Erro na solicitação:', error);
+        // Trate o erro conforme necessário
+      }
+    };
+  
+    fetchUserHistory();
+  }, [cpf]);
+  
 
   const handleDelete = () => {};
 
@@ -53,8 +68,14 @@ function Table() {
         <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
           <UserTable
             loading={loading}
-            dataHeader={dataHeader}
-            data={data}
+            dataHeader={dataHeader.map((item) => ({
+              ...item,
+              label: item.key === "Data" ? "Data" : item.label,
+            }))}
+            data={data.map((item) => ({
+              ...item,
+              Data: formatData(item.Data), // Chave "Data" formatada
+            }))}
             handleDelete={handleDelete}
           />
         </div>
