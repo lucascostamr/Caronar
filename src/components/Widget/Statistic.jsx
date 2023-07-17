@@ -28,7 +28,7 @@ function Statistic({ ...props }) {
   };
   return (
     <div className={`widgetCard p-3 md:py-4 md:px-6 ${props.className}`}>
-      <h1 className="text-medium font-semibold pb-4">Income Statement</h1>
+      <h1 className="text-medium font-semibold pb-4">Media de Preços</h1>
       <div className="">
         <Bar data={data} options={options} />
       </div>

@@ -54,6 +54,58 @@ app.get("/api/viagens/ativas", (req, res) => {
   });
 });
 
+app.get("/api/valor-medio-viagem", (req, res) => {
+  var query = `
+    SELECT YEAR(Data) AS Ano, MONTH(Data) AS Mes, COUNT(*) AS QuantidadeViagens, AVG(Preco) AS ValorMedio
+    FROM bdcarona.viagem
+    GROUP BY YEAR(Data), MONTH(Data)
+    ORDER BY Mes
+  `;
+
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+app.get("/api/numero-corridas/:motorista", (req, res) => {
+  var motorista = req.params.motorista;
+  var query = `
+    SELECT YEAR(viagem.Data) AS Ano, MONTH(viagem.Data) AS Mes, COUNT(*) AS NumeroCorridas
+    FROM bdcarona.viagem
+    JOIN bdcarona.motorista ON viagem.idMotorista = motorista.CNHmotorista
+    WHERE motorista.CNHmotorista = ?
+    GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+    ORDER BY Mes
+  `;
+
+  bd.query(query, [motorista], function (err, result, fields) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+
+
+app.get("/api/media-corridas", (req, res) => {
+  var query = `
+    SELECT YEAR(viagem.Data) AS Ano, MONTH(viagem.Data) AS Mes, COUNT(*) / COUNT(DISTINCT motorista.CNHmotorista) AS MediaCorridas
+    FROM bdcarona.viagem
+    JOIN bdcarona.motorista ON viagem.idMotorista = motorista.CNHmotorista
+    GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+    ORDER BY Mes
+  `;
+
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+
+
+
 
 
 
