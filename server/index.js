@@ -37,11 +37,14 @@ app.get("/api/user/:id/historico", (req, res) => {
   });
 });
 
-app.get("/api/viagens/ativas", () => {
+app.get("/api/viagens/ativas", (req, res) => {
   var query = `
-    SELECT *
-    FROM bdcarona.viagem
-    WHERE ativo = 1
+    SELECT v.Origem, v.Destino, m.Nome AS NomeMotorista, c.Modelo AS ModeloCarro, m.Classificacao, v.Preco
+    FROM bdcarona.viagem AS v
+    JOIN bdcarona.motorista AS m ON v.idMotorista = m.CNHmotorista
+    JOIN bdcarona.carro AS c ON m.CarroAtual = c.Placa
+    WHERE v.ativo = 1
+    LIMIT 10
   `;
 
   bd.query(query, function (err, result, fields) {
@@ -50,6 +53,8 @@ app.get("/api/viagens/ativas", () => {
     res.json(result);
   });
 });
+
+
 
 
 
