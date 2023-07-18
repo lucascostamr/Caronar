@@ -11,7 +11,7 @@ app.use(cors({
 
 app.get("/api/user/:id", (req, res) => {
   var userId = req.params.id;
-  var query = "SELECT * FROM bdcarona.passageiro AS user WHERE user.CPF = ?";
+  var query = "SELECT * FROM bdcarona.motorista AS user WHERE user.CNHmotorista = ?";
 
   bd.query(query, [userId], function (err, result, fields) {
     if (err) throw err;
@@ -79,14 +79,12 @@ app.get("/api/numero-corridas/:motorista", (req, res) => {
     GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
     ORDER BY Mes
   `;
-
   bd.query(query, [motorista], function (err, result, fields) {
     if (err) throw err;
+    console.log(result);
     res.json(result);
   });
 });
-
-
 
 app.get("/api/media-corridas", (req, res) => {
   var query = `
@@ -99,9 +97,27 @@ app.get("/api/media-corridas", (req, res) => {
 
   bd.query(query, function (err, result, fields) {
     if (err) throw err;
+    console.log(result);
     res.json(result);
   });
 });
+
+app.get("/api/motorista/:cnh/imagem-perfil", (req, res) => {
+  var cnh = req.params.cnh;
+
+  var query = `
+    SELECT ImagemPerfil
+    FROM bdcarona.motorista
+    WHERE CNHmotorista = ?
+  `;
+
+  bd.query(query, [cnh], function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
 
 
 
