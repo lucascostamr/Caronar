@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import StatisticWidget from "../components/Widget/Statistic.jsx";
 import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
@@ -6,8 +6,24 @@ import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
 
 function Dashboard() {
-  const avatar =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1H81w4SmKH5DZmIbxU7EB0aMSkNQDoPQA1mRQxf2Y0wMF1NSa7vghbwwKASi1q4NPmNw&usqp=CAU";
+  const [loading, setLoading] = useState(false);
+  const [avatar, setAvatar] = useState([]);
+
+  const cnh = "CNH1";
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/passageiros/${cnh}/imagem-perfil`)
+      .then((response) => response.json())
+      .then((data) => {
+        setAvatar(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, []);
 
   const dataOS = [
     {
@@ -68,7 +84,7 @@ function Dashboard() {
         {/* Welcome Header */}
         <DashboardHeader
           toggle={sidebarToggle}
-          avatar={avatar}
+          avatar={avatar.ImagemPerfil}
           user={{ name: "Hoki Teguh Oktian" }}
         />
 
