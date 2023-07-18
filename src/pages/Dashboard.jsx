@@ -7,23 +7,31 @@ import { useOutletContext } from "react-router-dom";
 
 function Dashboard() {
   const [loading, setLoading] = useState(false);
-  const [avatar, setAvatar] = useState([]);
+  const [avatar, setAvatar] = useState({});
 
   const cnh = "CNH1";
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/passageiros/${cnh}/imagem-perfil`)
+    fetch(`http://localhost:3000/api/motorista/${cnh}/imagem-perfil`)
       .then((response) => response.json())
       .then((data) => {
-        setAvatar(data);
+        if (
+          Array.isArray(data) &&
+          data.length > 0 &&
+          data[0].ImagemPerfil
+        ) {
+          setAvatar(data[0]);
+        } else {
+          setAvatar({});
+        }
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
       });
-  }, []);
+  }, [cnh]);
 
   const dataOS = [
     {
@@ -85,7 +93,7 @@ function Dashboard() {
         <DashboardHeader
           toggle={sidebarToggle}
           avatar={avatar.ImagemPerfil}
-          user={{ name: "Hoki Teguh Oktian" }}
+          user={{ name: avatar.nome }}
         />
 
         {/* Laba */}

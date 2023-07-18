@@ -106,7 +106,7 @@ app.get("/api/motorista/:cnh/imagem-perfil", (req, res) => {
   var cnh = req.params.cnh;
 
   var query = `
-    SELECT ImagemPerfil
+    SELECT nome, classificacao, ImagemPerfil
     FROM bdcarona.motorista
     WHERE CNHmotorista = ?
   `;
