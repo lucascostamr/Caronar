@@ -37,10 +37,10 @@ function RegisterIndex() {
               />
               <div className="md:block hidden text-slate-100">
                 <h1 className="font-semibold text-2xl pb-2">
-                  Register an Account
+                  Junte-se a nós
                 </h1>
                 <span className="text-sm">
-                  Free access to EDP Online services
+                 Sem taxas
                 </span>
               </div>
             </div>
@@ -50,14 +50,14 @@ function RegisterIndex() {
             <div className="loginWrapper flex flex-col w-full lg:px-36 md:px-8 px-8 md:py-8">
               {/* Login Header Text */}
               <div className="hidden md:block font-medium self-center text-xl sm:text-3xl text-gray-800">
-                Buatkan Akun
+                Caronar
               </div>
 
               {/* Sparator */}
               <div className="hidden md:block relative mt-10 h-px bg-gray-300">
                 <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
                   <span className="bg-white px-4 text-xs text-gray-500 uppercase">
-                    Daftarkan akun Anda sekarang, Gratis!
+                    Sua viagem compartilhada a um click
                   </span>
                 </div>
               </div>
@@ -208,7 +208,7 @@ function RegisterIndex() {
                   className="flex items-center justify-center focus:outline-none text-slate-500 text-sm bg-slate-200 rounded-lg md:rounded md:py-2 px-3 py-3 w-full transition duration-150 ease-in"
                 >
                   <FontAwesomeIcon icon={faGoogle} />
-                  <span className="mr-2 flex-1">Login with Google</span>
+                  <span className="mr-2 flex-1">Login com Google</span>
                 </button>
               </div>
               <div className="flex justify-between w-full mt-2">
@@ -218,7 +218,7 @@ function RegisterIndex() {
                   className="flex items-center justify-center focus:outline-none text-slate-500 text-sm bg-slate-200 rounded-lg md:rounded md:py-2 px-3 py-3 w-full transition duration-150 ease-in"
                 >
                   <FontAwesomeIcon icon={faFacebook} />
-                  <span className="mr-2 flex-1">Login with Facebook</span>
+                  <span className="mr-2 flex-1">Login com Facebook</span>
                 </button>
               </div>
               {/* End Social Button */}
@@ -242,7 +242,7 @@ function RegisterIndex() {
                       <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                     </svg>
                   </span>
-                  <span className="ml-2">Sudah punya akun?</span>
+                  <span className="ml-2">Indicar um amigo?</span>
                 </Link>
               </div>
               {/* End Register Link */}

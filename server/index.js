@@ -134,7 +134,7 @@ app.get("/api/melhores-motoristas", (req, res) => {
           SELECT COUNT(*) AS contagem
           FROM bdcarona.viagem AS v
           GROUP BY v.idMotorista
-        ) AS viagens
+        )  AS viagens
       )
     )
     GROUP BY m.CNHmotorista, m.Nome, e.Cidade, m.Classificacao

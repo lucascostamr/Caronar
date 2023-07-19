@@ -38,11 +38,10 @@ function Dashboard() {
       .then((response) => response.json())
       .then((data) => {
         const formattedData = data.map((motorista, index) => ({
-          title: motorista.Nome,
-          date: motorista.Cidade,
-          os: motorista.Classificacao,
-          gs: motorista.NumeroCorridas,
-          percentage: 0, // Coloque o valor desejado para essa propriedade
+          nome: motorista.Nome,
+          cidade: motorista.Cidade,
+          nota: motorista.Classificacao,
+          totalCorridas: motorista.NumeroCorridas,
           color: colorList[index % colorList.length], // Atribua uma cor da lista cíclica para cada objeto
         }));
         setDataOS(formattedData);

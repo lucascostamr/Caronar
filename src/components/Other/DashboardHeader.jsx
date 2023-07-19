@@ -20,7 +20,7 @@ function DashboardHeader({ user, avatar, toggle }) {
           />
         </p>
         <div id="nameSection">
-          <p className="text-sm font-semibold text-gray-500">Welcome back,</p>
+          <p className="text-sm font-semibold text-gray-500">Bem vindo de volta,</p>
           <h1 className="font-medium lg:text-3xl text-2xl text-gray-700">
             {user?.name}
           </h1>
