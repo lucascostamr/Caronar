@@ -4,7 +4,7 @@ import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
-import randomColor from "randomcolor";
+
 
 function Dashboard() {
   const [loading, setLoading] = useState(false);
