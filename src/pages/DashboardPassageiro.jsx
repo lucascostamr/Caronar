@@ -13,7 +13,7 @@ function DashboardPassageiro() {
   const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/motorista/${cnh}/imagem-perfil`)
+    fetch(`http://localhost:3000/api/motorista/${cnh}/imagem-perfil`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0 && data[0].ImagemPerfil) {
@@ -28,7 +28,7 @@ function DashboardPassageiro() {
   }, [cnh]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/melhores-motoristas")
+    fetch("http://localhost:3000/api/melhores-motoristas")
       .then((response) => response.json())
       .then((data) => {
         const formattedData = data.map((motorista, index) => ({
