@@ -118,6 +118,40 @@ app.get("/api/motorista/:cnh/imagem-perfil", (req, res) => {
   });
 });
 
+app.get("/api/melhores-motoristas", (req, res) => {
+  var query = `
+    SELECT m.Nome, e.Cidade, m.Classificacao, COUNT(v.ViagemID) AS NumeroCorridas
+    FROM bdcarona.motorista AS m
+    JOIN bdcarona.endereco AS e ON m.CNHmotorista = e.idMotorista
+    JOIN bdcarona.viagem AS v ON m.CNHmotorista = v.idMotorista
+    WHERE m.CNHmotorista IN (
+      SELECT v.idMotorista
+      FROM bdcarona.viagem AS v
+      GROUP BY v.idMotorista
+      HAVING COUNT(*) > (
+        SELECT AVG(contagem)
+        FROM (
+          SELECT COUNT(*) AS contagem
+          FROM bdcarona.viagem AS v
+          GROUP BY v.idMotorista
+        ) AS viagens
+      )
+    )
+    GROUP BY m.CNHmotorista, m.Nome, e.Cidade, m.Classificacao
+    ORDER BY m.Classificacao DESC
+    LIMIT 5
+  `;
+
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+
+
+
 
 
 

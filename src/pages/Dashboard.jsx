@@ -4,23 +4,22 @@ import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
+import randomColor from "randomcolor";
 
 function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({});
+  const [dataOS, setDataOS] = useState([]);
 
   const cnh = "CNH1";
+  const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
 
   useEffect(() => {
     setLoading(true);
     fetch(`http://localhost:3000/api/motorista/${cnh}/imagem-perfil`)
       .then((response) => response.json())
       .then((data) => {
-        if (
-          Array.isArray(data) &&
-          data.length > 0 &&
-          data[0].ImagemPerfil
-        ) {
+        if (Array.isArray(data) && data.length > 0 && data[0].ImagemPerfil) {
           setAvatar(data[0]);
         } else {
           setAvatar({});
@@ -33,56 +32,27 @@ function Dashboard() {
       });
   }, [cnh]);
 
-  const dataOS = [
-    {
-      title: "Kredit Konsumer",
-      date: "12/Mei/2023",
-      os: "23,938",
-      gs: "20,900",
-      percentage: 200.01,
-      color: "cardInfo",
-    },
-    {
-      title: "Kredit Ritel",
-      date: "12/Mei/2023",
-      os: "3,938",
-      gs: "2,900",
-      percentage: 190.01,
-      color: "cardWarning",
-    },
-    {
-      title: "Kredit KPR & KKB",
-      date: "12/Mei/2023",
-      os: "190,938",
-      gs: "192,900",
-      percentage: 99.01,
-      color: "cardDanger",
-    },
-    {
-      title: "Kredit UMKM",
-      date: "12/Mei/2023",
-      os: "2,938",
-      gs: "2,900",
-      percentage: 100.01,
-      color: "cardSuccess",
-    },
-    {
-      title: "Kredit Komersial",
-      date: "12/Mei/2023",
-      os: "23,938",
-      gs: "20,900",
-      percentage: 200.01,
-      color: "cardLime",
-    },
-    {
-      title: "Kredit BPR & LKM",
-      date: "12/Mei/2023",
-      os: "3,938",
-      gs: "10,900",
-      percentage: 210.01,
-      color: "cardDanger",
-    },
-  ];
+  useEffect(() => {
+    setLoading(true);
+    fetch("http://localhost:3000/api/melhores-motoristas")
+      .then((response) => response.json())
+      .then((data) => {
+        const formattedData = data.map((motorista, index) => ({
+          title: motorista.Nome,
+          date: motorista.Cidade,
+          os: motorista.Classificacao,
+          gs: motorista.NumeroCorridas,
+          percentage: 0, // Coloque o valor desejado para essa propriedade
+          color: colorList[index % colorList.length], // Atribua uma cor da lista cíclica para cada objeto
+        }));
+        setDataOS(formattedData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, []);
 
   const [sidebarToggle] = useOutletContext();
 
@@ -107,7 +77,7 @@ function Dashboard() {
         {/* OS Kredit */}
         <div className="px-2 mx-auto mainCard">
           <h1 className="text-slate-500 pb-3 text-base md:text-lg">
-            Pencapaian OS Kredit
+            Melhores Motoristas
           </h1>
 
           <div className="flex flex-row gap-x-4 overflow-hidden overflow-x-auto justify-between no-scrollbar">
