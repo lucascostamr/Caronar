@@ -4,7 +4,6 @@ import {
   faTable,
   faLock,
   faNoteSticky,
-  faNotdef
 } from "@fortawesome/free-solid-svg-icons";
 
 const initMenu = [
@@ -20,15 +19,11 @@ const initMenu = [
     label: "Blank",
     path: "/blank",
     icon: faPage4,
-  },
+  },  
   {
-    label: "404",
-    path: "/404",
-    icon: faNotdef,
-  },
-  
-  {
-    label: 'Histórico'
+    label: 'Histórico',
+    path: "/historico",
+    icon: faTable,
   },
   {
     label: "Form",

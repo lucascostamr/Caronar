@@ -5,7 +5,7 @@ import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
 
-function Dashboard() {
+function DashboardPassageiro() {
   const [avatar, setAvatar] = useState({});
   const [dataOS, setDataOS] = useState([]);
 
@@ -84,4 +84,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardPassageiro;

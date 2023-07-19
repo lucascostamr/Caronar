@@ -16,7 +16,7 @@ function LoginIndex() {
   const LoginSubmit = (e) => {
     e.preventDefault();
   
-    const request = cpf !== null ? new Request(`http://localhost:3000/api/user/${cpf}`, {
+    const request = cpf !== null ? new Request(`http://localhost:3001/api/user/${cpf}`, {
     method: "get",
     headers: {
         Accept: "application/json, text/plain, */*",
@@ -34,7 +34,6 @@ function LoginIndex() {
       })
       .catch((error) => {
         setError(['Usuario ou senha invalidos']);
-        console.error(error);
       })
       .finally(() => {
         setLoading(false);
@@ -48,6 +47,8 @@ function LoginIndex() {
     console.log(tipoUsuario);
     if (tipoUsuario === "motorista") {
       navigate('/');
+    } else {
+      navigate('/passageiro');
     }
   };
 

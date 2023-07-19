@@ -1,4 +1,4 @@
-import { faLeaf, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import initMenus from "../../data/menus.js";
@@ -47,7 +47,7 @@ function Sidebar({ ...props }) {
         {/* Sidebar wrapper */}
         <div className="md:w-64 border-r-2 border-gray-100 h-full flex-col flex flex-shrink-0">
           {/* Logo */}
-          <SidebarLogo toggle={props.toggle} icon={faLeaf} text="Laravel" />
+          <SidebarLogo toggle={props.toggle} icon={faCar} text="Caronar" />
 
           {/* Search Menu */}
           <SidebarSearch
