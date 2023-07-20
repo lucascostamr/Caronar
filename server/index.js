@@ -252,6 +252,8 @@ app.get("/api/passageiro/:cpf/historico", (req, res) => {
     AND v.ativo = 0
     LIMIT 30;
   `;
+
+  console.log(query);
   bd.query(query, function (err, result, fields) {
     if (err) throw err;
     console.log(result);
