@@ -242,16 +242,17 @@ app.get("/api/numero-caronas/:cpf", (req, res) => {
 });
 
 app.get("/api/passageiro/:cpf/historico", (req, res) => {
-  var passageiroId = req.params.id;
+  var passageiroId = req.params.cpf;
   var query = `
     SELECT v.Data, v.Hora, v.Origem, v.Destino, m.Nome AS NomeMotorista, v.Preco
     FROM bdcarona.viagem AS v
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
     JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
     WHERE r.CPF = "${passageiroId}"
-    AND v.ativo = 0;
+    AND v.ativo = 1;
   `;
 
+  console.log(query);
   bd.query(query, function (err, result, fields) {
     if (err) throw err;
     console.log(result);

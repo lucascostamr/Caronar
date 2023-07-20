@@ -52,7 +52,7 @@ function TablePassageiro() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/viagens/ativas`);
+        const response = await fetch(`http://localhost:3001/api/passageiro/viagens/ativas`);
         const data = await response.json();
         setData(data);
       } catch (error) {

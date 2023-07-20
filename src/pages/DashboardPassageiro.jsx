@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StatisticWidget from "../components/Widget/Statistic.jsx";
 import StatisticWidget2 from "../components/Widget/Statistic2.jsx";
-import AchievementWidget from "../components/Widget/Achievment.jsx";
+// import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
