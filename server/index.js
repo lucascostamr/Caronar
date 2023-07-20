@@ -40,7 +40,26 @@ app.get("/api/motorista/:id/historico", (req, res) => {
   });
 });
 
-app.get("/api/viagens/ativas", (req, res) => {
+app.get("/api/motorista/viagens/ativas/:cnh", (req, res) => {
+  var cnh = req.params.cnh;
+  var query = `
+    SELECT v.Origem, v.Destino, m.Nome AS NomeMotorista, c.Modelo AS ModeloCarro, m.Classificacao, v.Preco, v.Data, v.Hora
+    FROM bdcarona.viagem AS v
+    JOIN bdcarona.motorista AS m ON v.idMotorista = m.CNHmotorista
+    JOIN bdcarona.carro AS c ON m.CarroAtual = c.Placa
+    WHERE v.ativo = 1
+    AND m.CNHmotorista = "${cnh}"
+    LIMIT 10;
+  `;
+
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+app.get("/api/passageiro/viagens/ativas", (req, res) => {
   var query = `
     SELECT v.Origem, v.Destino, m.Nome AS NomeMotorista, c.Modelo AS ModeloCarro, m.Classificacao, v.Preco, v.Data, v.Hora
     FROM bdcarona.viagem AS v
@@ -123,28 +142,28 @@ app.get("/api/motorista/:cnh/imagem-perfil", (req, res) => {
 
 app.get("/api/melhores-motoristas", (req, res) => {
   var query = `
-  SELECT  
-  m.Nome,
-  e.Cidade,
-  m.Classificacao,
-  COUNT(v.ViagemID) AS NumeroCorridas
-FROM bdcarona.motorista AS m
-LEFT JOIN bdcarona.viagem AS v ON m.CNHmotorista = v.idMotorista
-LEFT JOIN bdcarona.endereco AS e ON m.CNHmotorista = e.idMotorista
-GROUP BY m.CNHmotorista, m.Nome, e.Cidade
-HAVING COUNT(v.ViagemID) > (
-  SELECT 
-      AVG(NumeroCorridas)
-  FROM (
-      SELECT 
-          COUNT(ViagemID) AS NumeroCorridas
-      FROM bdcarona.motorista AS m
-      LEFT JOIN bdcarona.viagem AS v ON m.CNHmotorista = v.idMotorista
-      GROUP BY m.CNHmotorista
-  ) AS subconsulta
-)
-ORDER BY Classificacao desc, NumeroCorridas DESC
-limit 5;
+    SELECT  
+    m.Nome,
+    e.Cidade,
+    m.Classificacao,
+    COUNT(v.ViagemID) AS NumeroCorridas
+  FROM bdcarona.motorista AS m
+  LEFT JOIN bdcarona.viagem AS v ON m.CNHmotorista = v.idMotorista
+  LEFT JOIN bdcarona.endereco AS e ON m.CNHmotorista = e.idMotorista
+  GROUP BY m.CNHmotorista, m.Nome, e.Cidade
+  HAVING COUNT(v.ViagemID) > (
+    SELECT 
+        AVG(NumeroCorridas)
+    FROM (
+        SELECT 
+            COUNT(ViagemID) AS NumeroCorridas
+        FROM bdcarona.motorista AS m
+        LEFT JOIN bdcarona.viagem AS v ON m.CNHmotorista = v.idMotorista
+        GROUP BY m.CNHmotorista
+    ) AS subconsulta
+  )
+  ORDER BY Classificacao desc, NumeroCorridas DESC
+  limit 5;
   `;
 
   bd.query(query, function (err, result, fields) {
@@ -229,7 +248,8 @@ app.get("/api/passageiro/:cpf/historico", (req, res) => {
     FROM bdcarona.viagem AS v
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
     JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
-    WHERE r.CPF = "${passageiroId}";
+    WHERE r.CPF = "${passageiroId}"
+    AND v.ativo = 0;
   `;
 
   bd.query(query, function (err, result, fields) {
