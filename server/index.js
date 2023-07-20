@@ -249,10 +249,9 @@ app.get("/api/passageiro/:cpf/historico", (req, res) => {
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
     JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
     WHERE r.CPF = "${passageiroId}"
-    AND v.ativo = 1;
+    AND v.ativo = 0
+    LIMIT 30;
   `;
-
-  console.log(query);
   bd.query(query, function (err, result, fields) {
     if (err) throw err;
     console.log(result);

@@ -39,7 +39,7 @@ function HistoryPassageiro() {
     return splitDateTime[0];
   };
 
-  const cpf = '111.111.111-11';
+  const cpf = '000.000.000-01';
 
   useEffect(() => {
     const fetchUserHistory = async () => {
