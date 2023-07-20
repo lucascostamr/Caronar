@@ -20,14 +20,14 @@ app.get("/api/user/:id", (req, res) => {
   });
 });
 
-app.get("/api/user/:id/historico", (req, res) => {
-  var userId = req.params.id;
+app.get("/api/motorista/:id/historico", (req, res) => {
+  var motoristaId = req.params.id;
   var query = `
     SELECT v.Data, v.Hora, v.Origem, v.Destino, m.Nome AS NomeMotorista, v.Preco
     FROM bdcarona.viagem AS v
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
-    JOIN bdcarona.motorista AS m ON v.idMotorista = m.CNHmotorista
-    WHERE r.CPF = "${userId}"
+    JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
+    WHERE v.idMotorista = "${motoristaId}";
   `;
 
   bd.query(query, [userId], function (err, result, fields) {
@@ -149,8 +149,16 @@ app.get("/api/melhores-motoristas", (req, res) => {
   });
 });
 
-app.get("/api/melhores-passageiros", (req, res) => {
-  var query = '';
+app.get("/api/passageiros-mais-viagens", (req, res) => {
+  var query = `
+    SELECT p.Nome AS Nome, p.CPF, e.Cidade, COUNT(r.ViagemID) AS NumeroDeViagens
+    FROM bdcarona.passageiro p
+    LEFT JOIN bdcarona.realiza r ON p.CPF = r.CPF
+    LEFT JOIN bdcarona.endereco AS e ON e.idPassageiro = p.CPF
+    GROUP BY p.CPF, e.Cidade
+    ORDER BY NumeroDeViagens DESC
+    LIMIT 5;
+  `;
 
   bd.query(query, function (err, result, fields) {
     if (err) throw err;
@@ -160,15 +168,66 @@ app.get("/api/melhores-passageiros", (req, res) => {
 })
 
 app.get("/api/passageiro/:cpf/imagem-perfil", (req, res) => {
-  var cnh = req.params.cnh;
+  var passageiroId = req.params.cpf;
 
   var query = `
-    SELECT nome, classificacao, ImagemPerfil
+    SELECT nome, ImagemPerfil
     FROM bdcarona.passageiro as passageiro
-    WHERE passageiro.CPF = ?
+    WHERE passageiro.CPF = "${passageiroId}";
   `;
 
-  bd.query(query, [cnh], function (err, result, fields) {
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+app.get("/api/media-caronas", (req, res) => {
+  var query = `
+    SELECT YEAR(viagem.Data) AS Ano, MONTH(viagem.Data) AS Mes, COUNT(*) / COUNT(DISTINCT p.CPF) AS MediaCaronas
+    FROM bdcarona.viagem
+    JOIN bdcarona.realiza as r ON r.ViagemID = viagem.ViagemID 
+    JOIN bdcarona.passageiro as p ON p.CPF = r.CPF
+    GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+    ORDER BY Mes;
+  `;
+
+  bd.query(query, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+app.get("/api/numero-caronas/:cpf", (req, res) => {
+  var passageiroId = req.params.cpf;
+  var query = `
+    SELECT YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) AS NumeroCorridas
+    FROM bdcarona.viagem AS v
+    JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID 
+    WHERE r.CPF = "${passageiroId}"
+    GROUP BY YEAR(v.Data), MONTH(v.Data)
+    ORDER BY Mes;
+  `;
+  bd.query(query, [motorista], function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+app.get("/api/passageiro/:cpf/historico", (req, res) => {
+  var passageiroId = req.params.id;
+  var query = `
+    SELECT v.Data, v.Hora, v.Origem, v.Destino, m.Nome AS NomeMotorista, v.Preco
+    FROM bdcarona.viagem AS v
+    JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
+    JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
+    WHERE r.CPF = "${passageiroId}";
+  `;
+
+  bd.query(query, [userId], function (err, result, fields) {
     if (err) throw err;
     console.log(result);
     res.json(result);
