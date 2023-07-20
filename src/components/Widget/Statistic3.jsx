@@ -1,26 +1,23 @@
 import React from "react";
 import Chart from "chart.js/auto";
-import { Bar } from "react-chartjs-2";
+import { PolarArea } from "react-chartjs-2";
 import "./widget.css";
 
 Chart.register();
 
 function Statistic3({ ...props }) {
   const data = {
-    labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul"],
+    labels: ["Ouro Branco", "Conselheiro Lafaiete", "Congonhas"],
     datasets: [
       {
-        label: "2025",
-        data: ["12", "22", "90", "150", "145", "120", "190"],
-      },
-      {
-        label: "Mulheres",
-        data: ["6", "12", "90", "150", "145", "120", "190"],
-      },
-      {
-        label: "Target",
-        data: ["11", "20", "89", "149", "150"],
-        type: "line",
+        data: [157, 157, 79],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.6)", // Jan - Vermelho
+          "rgba(54, 162, 235, 0.6)", // Fev - Azul
+          "rgba(255, 206, 86, 0.6)", // Mar - Amarelo
+
+        ],
+        label: "Corridas por Cidade",
       },
     ],
   };
@@ -28,13 +25,13 @@ function Statistic3({ ...props }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    aspectRatio: 2,
+    aspectRatio: 3.5, // Aumente o valor para tornar o gráfico maior
   };
+
   return (
     <div className={`widgetCard p-3 md:py-4 md:px-6 ${props.className}`}>
-      <h1 className="text-medium font-semibold pb-4">Motoristas disponíveis</h1>
       <div className="">
-        <Bar data={data} options={options} />
+        <PolarArea data={data} options={options} />
       </div>
     </div>
   );

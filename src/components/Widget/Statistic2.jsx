@@ -7,20 +7,15 @@ Chart.register();
 
 function Statistic2({ ...props }) {
   const data = {
-    labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul"],
+    labels: ["Ouro Branco", "Congonhas", "Conselheiro Lafaiete"],
     datasets: [
       {
-        label: "2025",
-        data: ["12", "22", "90", "150", "145", "120", "190"],
+        label: "Homens",
+        data: ["2", "23", "0"],
       },
       {
         label: "Mulheres",
-        data: ["6", "12", "90", "150", "145", "120", "190"],
-      },
-      {
-        label: "Target",
-        data: ["11", "20", "89", "149", "150"],
-        type: "line",
+        data: ["0", "22", "2"],
       },
     ],
   };

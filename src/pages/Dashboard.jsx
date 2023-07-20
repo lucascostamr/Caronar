@@ -62,14 +62,14 @@ function Dashboard() {
         {/* Laba */}
         <div className="px-2 mx-auto mainCard">
           <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
-            <StatisticWidget3 className="col-span-4 col-start-1 bg-white" />
+            <StatisticWidget4 className="col-span-4 col-start-1 bg-white" />
             <AchievementWidget />
           </div>
         </div>
 
         <div className="px-2 mx-auto mainCard">
           <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
-            <StatisticWidget4 className="col-span-4 col-start-1 bg-white" />
+            <StatisticWidget3 className="col-span-4 col-start-1 bg-white" />
           </div>
         </div>
 

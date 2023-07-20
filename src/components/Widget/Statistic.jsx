@@ -10,17 +10,17 @@ function Statistic({ ...props }) {
     labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
     datasets: [
       {
-        label: "2023",
-        data: ["12", "22", "90", "150", "145", "120", "190"],
+        label: "Você",
+        data: ["6", "1", "2", "1", "1", "2", "2"],
       },
       {
         label: "Demais usuários",
-        data: ["11", "20", "89", "149", "150"],
+        data: ["2.9800", "1.7200", "1.5400", "1.2000", "1.0800", "1.0000", "1.5000"],
         type: "line",
       },
       {
-        label: "Dnovos",
-        data: ["11", "20", "19", "149", "150"],
+        label: "Mulheres",
+        data: ["3.12", "1.72", "1.52", "1.2000", "1.0800", "1.0000", "1.4800"],
         type: "line",
       },
     ],
