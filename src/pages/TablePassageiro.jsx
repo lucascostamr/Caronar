@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import UserTable from "./UserTable";
 
-function Table() {
+function TablePassageiro() {
   const [loading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -39,12 +39,12 @@ function Table() {
     return splitDateTime[0];
   };
 
-  const cnh = 'CNH1';
+  const cpf = '111.111.111-11';
 
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/motorista/${cnh}/historico`);
+        const response = await fetch(`http://localhost:3001/api/passageiro/${cpf}/historico`);
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -84,4 +84,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default TablePassageiro;
