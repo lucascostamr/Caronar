@@ -54,7 +54,7 @@ function Table() {
     };
   
     fetchUserHistory();
-  }, [cpf]);
+  }, [cnh]);
   
 
   const handleDelete = () => {};
