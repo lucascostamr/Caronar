@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import UserTable from "./UserTable";
 
-function Table() {
+function History() {
   const [loading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -84,4 +84,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default History;

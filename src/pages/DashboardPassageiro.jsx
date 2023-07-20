@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StatisticWidget from "../components/Widget/Statistic.jsx";
-// import AchievementWidget from "../components/Widget/Achievment.jsx";
+import StatisticWidget2 from "../components/Widget/Statistic2.jsx";
+import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
@@ -9,7 +10,7 @@ function DashboardPassageiro() {
   const [avatar, setAvatar] = useState({});
   const [dataOS, setDataOS] = useState([]);
 
-  const cpf = "111.111.111-11";
+  const cpf = "000.000.000-01";
   
   useEffect(() => {
     fetch(`http://localhost:3001/api/passageiro/${cpf}/imagem-perfil`)
@@ -60,9 +61,16 @@ function DashboardPassageiro() {
         <div className="px-2 mx-auto mainCard">
           <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
             <StatisticWidget className="col-span-4 col-start-1 bg-white" />
-            {/* <AchievementWidget /> */}
           </div>
         </div>
+
+
+        <div className="px-2 mx-auto mainCard">
+          <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
+            <StatisticWidget2 className="col-span-4 col-start-1 bg-white" />
+          </div>
+        </div>
+
 
         {/* OS Kredit */}
         <div className="px-2 mx-auto mainCard">

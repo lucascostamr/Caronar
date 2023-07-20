@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import StatisticWidget from "../components/Widget/Statistic.jsx";
+import StatisticWidget3 from "../components/Widget/Statistic3.jsx";
+import StatisticWidget4 from "../components/Widget/Statistic4.jsx";
 import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
@@ -10,7 +11,7 @@ function Dashboard() {
   const [dataOS, setDataOS] = useState([]);
 
   const cnh = "CNH1";
-  const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
+
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/motorista/${cnh}/imagem-perfil`)
@@ -28,6 +29,7 @@ function Dashboard() {
   }, [cnh]);
 
   useEffect(() => {
+    const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
     fetch("http://localhost:3001/api/melhores-motoristas")
       .then((response) => response.json())
       .then((data) => {
@@ -43,7 +45,7 @@ function Dashboard() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  },[]);
 
   const [sidebarToggle] = useOutletContext();
 
@@ -60,8 +62,14 @@ function Dashboard() {
         {/* Laba */}
         <div className="px-2 mx-auto mainCard">
           <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
-            <StatisticWidget className="col-span-4 col-start-1 bg-white" />
+            <StatisticWidget3 className="col-span-4 col-start-1 bg-white" />
             <AchievementWidget />
+          </div>
+        </div>
+
+        <div className="px-2 mx-auto mainCard">
+          <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
+            <StatisticWidget4 className="col-span-4 col-start-1 bg-white" />
           </div>
         </div>
 

@@ -5,22 +5,21 @@ import "./widget.css";
 
 Chart.register();
 
-function Statistic({ ...props }) {
+function Statistic4({ ...props }) {
   const data = {
-    labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+    labels: ["Jan", "Fev", "Mar", "Apr", "Mai", "Jun", "Jul"],
     datasets: [
       {
-        label: "2023",
+        label: "2025",
         data: ["12", "22", "90", "150", "145", "120", "190"],
       },
       {
-        label: "Demais usuários",
-        data: ["11", "20", "89", "149", "150"],
-        type: "line",
+        label: "Mulheres",
+        data: ["6", "12", "90", "150", "145", "120", "190"],
       },
       {
-        label: "Dnovos",
-        data: ["11", "20", "19", "149", "150"],
+        label: "Target",
+        data: ["11", "20", "89", "149", "150"],
         type: "line",
       },
     ],
@@ -33,7 +32,7 @@ function Statistic({ ...props }) {
   };
   return (
     <div className={`widgetCard p-3 md:py-4 md:px-6 ${props.className}`}>
-      <h1 className="text-medium font-semibold pb-4">Total viagens</h1>
+      <h1 className="text-medium font-semibold pb-4">Motoristas disponíveis</h1>
       <div className="">
         <Bar data={data} options={options} />
       </div>
@@ -41,4 +40,4 @@ function Statistic({ ...props }) {
   );
 }
 
-export default Statistic;
+export default Statistic4;

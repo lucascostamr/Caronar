@@ -24,10 +24,6 @@ function Table() {
       label: "Destino",
     },
     {
-      key: "NomeMotorista",
-      label: "Motorista",
-    },
-    {
       key: "Preco",
       label: "Preço",
     }

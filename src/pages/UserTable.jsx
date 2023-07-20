@@ -27,9 +27,6 @@ function UserTable({ loading, dataHeader, data, handleDelete }) {
           <TableCell dataLabel="Destino" showLabel={true}>
             <p className="font-normal text-sm text-gray-500">{row.Destino}</p>
           </TableCell>
-          <TableCell dataLabel="Motorista" showLabel={true}>
-            <p className="font-normal text-sm text-gray-500">{row.NomeMotorista}</p>
-          </TableCell>
           <TableCell dataLabel="Preço" showLabel={true}>
             <p className="font-normal text-sm text-gray-500">{row.Preco}</p>
           </TableCell>
