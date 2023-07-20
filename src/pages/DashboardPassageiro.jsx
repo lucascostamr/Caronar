@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import StatisticWidget from "../components/Widget/Statistic.jsx";
-import AchievementWidget from "../components/Widget/Achievment.jsx";
+// import AchievementWidget from "../components/Widget/Achievment.jsx";
 import DashboardHeader from "../components/Other/DashboardHeader.jsx";
 import ScrolledCard from "../components/Widget/ScrolledCard.jsx";
 import { useOutletContext } from "react-router-dom";
@@ -9,11 +9,10 @@ function DashboardPassageiro() {
   const [avatar, setAvatar] = useState({});
   const [dataOS, setDataOS] = useState([]);
 
-  const cnh = "CNH1";
-  const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
-
+  const cpf = "111.111.111-11";
+  
   useEffect(() => {
-    fetch(`http://localhost:3001/api/motorista/${cnh}/imagem-perfil`)
+    fetch(`http://localhost:3001/api/passageiro/${cpf}/imagem-perfil`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0 && data[0].ImagemPerfil) {
@@ -25,17 +24,17 @@ function DashboardPassageiro() {
       .catch((error) => {
         console.log(error);
       });
-  }, [cnh]);
+  }, [cpf]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/melhores-motoristas")
+    const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
+    fetch("http://localhost:3001/api/passageiros-mais-viagens")
       .then((response) => response.json())
       .then((data) => {
-        const formattedData = data.map((motorista, index) => ({
-          nome: motorista.Nome,
-          cidade: motorista.Cidade,
-          nota: motorista.Classificacao,
-          totalCorridas: motorista.NumeroCorridas,
+        const formattedData = data.map((passageiro, index) => ({
+          nome: passageiro.Nome,
+          cidade: passageiro.Cidade,
+          totalCorridas: passageiro.NumeroDeViagens,
           color: colorList[index % colorList.length], // Atribua uma cor da lista cíclica para cada objeto
         }));
         setDataOS(formattedData);
@@ -43,7 +42,7 @@ function DashboardPassageiro() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  }, []);
 
   const [sidebarToggle] = useOutletContext();
 
@@ -61,14 +60,14 @@ function DashboardPassageiro() {
         <div className="px-2 mx-auto mainCard">
           <div className="w-full overflow-hidden text-slate-700 md:grid gap-4 grid md:grid-cols-6">
             <StatisticWidget className="col-span-4 col-start-1 bg-white" />
-            <AchievementWidget />
+            {/* <AchievementWidget /> */}
           </div>
         </div>
 
         {/* OS Kredit */}
         <div className="px-2 mx-auto mainCard">
           <h1 className="text-slate-500 pb-3 text-base md:text-lg">
-            Melhores Motoristas
+            Passageiros com mais viagens
           </h1>
 
           <div className="flex flex-row gap-x-4 overflow-hidden overflow-x-auto justify-between no-scrollbar">
