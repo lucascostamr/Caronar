@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import UserTable from "./UserTable";
+import UserTable from "./UserTablePassageiro";
 
-function History() {
+function HistoryPassageiro() {
   const [loading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -44,7 +44,7 @@ function History() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/user/${cpf}/historico`);
+        const response = await fetch(`http://localhost:3001/api/passageiro/${cpf}/historico`);
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -56,7 +56,6 @@ function History() {
     fetchUserHistory();
   }, [cpf]);
   
-
   const handleDelete = () => {};
 
   return (
@@ -84,4 +83,4 @@ function History() {
   );
 }
 
-export default History;
+export default HistoryPassageiro;

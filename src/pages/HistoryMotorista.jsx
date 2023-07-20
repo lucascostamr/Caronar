@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import UserTable from "./UserTable";
+import UserTable from "./UserTablePassageiro";
 
-function Table() {
+function HistoryMotorista() {
   const [loading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -24,6 +24,10 @@ function Table() {
       label: "Destino",
     },
     {
+      key: "NomeMotorista",
+      label: "Motorista",
+    },
+    {
       key: "Preco",
       label: "Preço",
     }
@@ -40,7 +44,7 @@ function Table() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/motorista/viagens/ativas/${cnh}`);
+        const response = await fetch(`http://localhost:3001/api/passageiro/${cnh}/historico`);
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -52,7 +56,6 @@ function Table() {
     fetchUserHistory();
   }, [cnh]);
   
-
   const handleDelete = () => {};
 
   return (
@@ -80,4 +83,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default HistoryMotorista;
