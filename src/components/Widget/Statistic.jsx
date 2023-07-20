@@ -11,7 +11,7 @@ function Statistic({ ...props }) {
     datasets: [
       {
         label: "Você",
-        data: ["6", "1", "2", "1", "1", "2", "2"],
+        data: ["6", "1", "2", "1", "2", "0", "2"],
       },
       {
         label: "Demais usuários",

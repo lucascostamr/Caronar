@@ -1372,6 +1372,11 @@ VALUES
 (393, '000.000.000-18');
   
 
+UPDATE `bdcarona`.`motorista` SET `ImagemPerfil` = 'https://github.com/DreaMagici4n/Caronar/assets/105292741/f87448f9-4905-43f3-b121-adb65c232c18' WHERE (`CNHmotorista` = 'CNH36');
+INSERT INTO `bdcarona`.`viagem` (`ViagemID`, `Data`, `Hora`, `Destino`, `Origem`, `Preco`, `Vagas`, `idMotorista`, `duracao`) VALUES ('394', '2023-07-11', '12:30:00', 'Ouro Branco', 'Conselheiro Lafaiete', '15', '2', 'CNH36', '02:30:00');
+INSERT INTO `bdcarona`.`viagem` (`ViagemID`, `Data`, `Hora`, `Destino`, `Origem`, `Preco`, `Vagas`, `idMotorista`, `duracao`) VALUES ('395', '2023-07-11', '18:30:00', 'Conselheiro Lafaiete', 'Ouro Branco', '15', '2', 'CNH36', '02:30:00');
+UPDATE `bdcarona`.`passageiro` SET `ImagemPerfil` = 'https://github.com/DreaMagici4n/Caronar/assets/105292741/9b32f2b4-61a0-4354-bd2b-7fd7eb40b076' WHERE (`CPF` = '000.000.000-01');
+
 
 
 
