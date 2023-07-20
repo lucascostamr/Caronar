@@ -27,10 +27,11 @@ app.get("/api/motorista/:id/historico", (req, res) => {
     FROM bdcarona.viagem AS v
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
     JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
-    WHERE v.idMotorista = "${motoristaId}";
+    WHERE v.idMotorista = "${motoristaId}"
+    LIMIT 30;
   `;
 
-  bd.query(query, [userId], function (err, result, fields) {
+  bd.query(query, [motoristaId], function (err, result, fields) {
     if (err) throw err;
     console.log(result);
     res.json(result);
@@ -226,7 +227,8 @@ app.get("/api/passageiro/:cpf/historico", (req, res) => {
     FROM bdcarona.viagem AS v
     JOIN bdcarona.realiza AS r ON r.ViagemID = v.ViagemID
     JOIN bdcarona.motorista AS m ON m.CNHmotorista = v.idMotorista
-    WHERE r.CPF = "${passageiroId}";
+    WHERE r.CPF = "${passageiroId}"
+    limit 30;
   `;
 
   bd.query(query, [userId], function (err, result, fields) {
