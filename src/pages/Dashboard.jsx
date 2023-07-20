@@ -10,7 +10,7 @@ function Dashboard() {
   const [dataOS, setDataOS] = useState([]);
 
   const cnh = "CNH1";
-  const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
+  
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/motorista/${cnh}/imagem-perfil`)
@@ -28,6 +28,8 @@ function Dashboard() {
   }, [cnh]);
 
   useEffect(() => {
+
+    const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
     fetch("http://localhost:3000/api/melhores-motoristas")
       .then((response) => response.json())
       .then((data) => {
@@ -43,7 +45,7 @@ function Dashboard() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  },[]);
 
   const [sidebarToggle] = useOutletContext();
 
