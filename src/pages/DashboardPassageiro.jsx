@@ -9,7 +9,7 @@ function DashboardPassageiro() {
   const [avatar, setAvatar] = useState({});
   const [dataOS, setDataOS] = useState([]);
 
-  const cpf = "111.111.111-11";
+  const cpf = "000.000.000-01";
   
   useEffect(() => {
     fetch(`http://localhost:3000/api/passageiro/${cpf}/imagem-perfil`)
