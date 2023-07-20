@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import UserTable from "./UserTable";
+import UserTable from "./UserTablePassageiro";
 
 function TablePassageiro() {
   const [loading] = useState(false);
@@ -28,8 +28,16 @@ function TablePassageiro() {
       label: "Motorista",
     },
     {
+      key: "Classificacao",
+      label: "Classificacao",
+    },
+    {
+      key: "ModeloCarro",
+      label: "Modelo do Carro",
+    },
+    {
       key: "Preco",
-      label: "Preço",
+      label: "Preco",
     }
   ];
   
@@ -44,7 +52,7 @@ function TablePassageiro() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/passageiro/${cpf}/historico`);
+        const response = await fetch(`http://localhost:3001/api/viagens/ativas`);
         const data = await response.json();
         setData(data);
       } catch (error) {

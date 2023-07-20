@@ -30,6 +30,12 @@ function UserTable({ loading, dataHeader, data, handleDelete }) {
           <TableCell dataLabel="Motorista" showLabel={true}>
             <p className="font-normal text-sm text-gray-500">{row.NomeMotorista}</p>
           </TableCell>
+          <TableCell dataLabel="Classificacao" showLabel={true}>
+            <p className="font-normal text-sm text-gray-500">{row.Classificacao}</p>
+          </TableCell>
+          <TableCell dataLabel="Modelo" showLabel={true}>
+            <p className="font-normal text-sm text-gray-500">{row.ModeloCarro}</p>
+          </TableCell>
           <TableCell dataLabel="Preço" showLabel={true}>
             <p className="font-normal text-sm text-gray-500">{row.Preco}</p>
           </TableCell>
