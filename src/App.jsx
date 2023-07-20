@@ -10,6 +10,7 @@ import Blank from "./pages/Blank";
 import Form from "./pages/Form";
 import RegisterIndex from "./pages/auth/Register";
 import DashboardPassageiro from "./pages/DashboardPassageiro";
+import TablePassageiro from "./pages/TablePassageiro";
 
 function App() {
   return (
@@ -26,9 +27,9 @@ function App() {
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/auth/register" element={<RegisterIndex />}></Route>
       </Route>
-      <Route path="/passageiro" element={<AuthLayout />}>
+      <Route path="/passageiro" element={<GuestLayout />}>
         <Route path="/passageiro/" element={<DashboardPassageiro />}></Route>
-        <Route path="/passageiro/table" element={<Table />}></Route>
+        <Route path="/passageiro/table" element={<TablePassageiro />}></Route>
         <Route path="/passageiro/historico" element={<Table />}></Route>
         <Route path="/passageiro/profile" element={<Blank />}></Route>
       </Route>

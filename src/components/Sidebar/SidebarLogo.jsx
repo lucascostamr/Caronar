@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-function SidebarLogo({ icon, text, ...props }) {
+function SidebarLogo({ icon, text, link="/", ...props }) {
   return (
     <div className="relative flex flex-row font-semibold text-3xl md:items-center md:mx-auto text-green-700 mb-5 p-4 justify-between">
-      <Link to="/">
+      <Link to={link}>
         <FontAwesomeIcon icon={icon}></FontAwesomeIcon> {text}
       </Link>
       <button
