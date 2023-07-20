@@ -11,6 +11,7 @@ import Form from "./pages/Form";
 import RegisterIndex from "./pages/auth/Register";
 import DashboardPassageiro from "./pages/DashboardPassageiro";
 import TablePassageiro from "./pages/TablePassageiro";
+import PassageiroLayout from "./components/Layout/PassageiroLayout";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/auth/register" element={<RegisterIndex />}></Route>
       </Route>
-      <Route path="/passageiro" element={<GuestLayout />}>
+      <Route path="/passageiro" element={<PassageiroLayout />}>
         <Route path="/passageiro/" element={<DashboardPassageiro />}></Route>
         <Route path="/passageiro/table" element={<TablePassageiro />}></Route>
         <Route path="/passageiro/historico" element={<Table />}></Route>
