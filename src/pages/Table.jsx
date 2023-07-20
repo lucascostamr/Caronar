@@ -35,7 +35,7 @@ function Table() {
     return splitDateTime[0];
   };
 
-  const cnh = 'CNH1';
+  const cnh = 'CNH35';
 
   useEffect(() => {
     const fetchUserHistory = async () => {
