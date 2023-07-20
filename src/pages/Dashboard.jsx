@@ -10,7 +10,7 @@ function Dashboard() {
   const [avatar, setAvatar] = useState({});
   const [dataOS, setDataOS] = useState([]);
 
-  const cnh = "CNH1";
+  const cnh = "CNH36";
 
 
   useEffect(() => {
