@@ -44,7 +44,7 @@ function Table() {
   useEffect(() => {
     const fetchUserHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/motorista/${cnh}/historico`);
+        const response = await fetch(`http://localhost:3000/api/motorista/${cnh}/historico`);
         const data = await response.json();
         setData(data);
       } catch (error) {

@@ -12,7 +12,7 @@ function DashboardPassageiro() {
   const cpf = "111.111.111-11";
   
   useEffect(() => {
-    fetch(`http://localhost:3001/api/passageiro/${cpf}/imagem-perfil`)
+    fetch(`http://localhost:3000/api/passageiro/${cpf}/imagem-perfil`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0 && data[0].ImagemPerfil) {
@@ -28,7 +28,7 @@ function DashboardPassageiro() {
 
   useEffect(() => {
     const colorList = ["cardInfo", "cardWarning", "cardDanger", "cardSuccess", "cardLime"];
-    fetch("http://localhost:3001/api/passageiros-mais-viagens")
+    fetch("http://localhost:3000/api/passageiros-mais-viagens")
       .then((response) => response.json())
       .then((data) => {
         const formattedData = data.map((passageiro, index) => ({
