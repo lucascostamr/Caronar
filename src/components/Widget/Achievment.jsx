@@ -7,7 +7,7 @@ function Achievement() {
         Sua Nota
       </div>
       <div className="font-semibold m-auto pt-4">
-        <span className="text-lg lg:text-[80px]">4.5</span>
+        <span className="text-lg lg:text-[80px]">5.0</span>
         <span className="text-[14px]"></span>★
       </div>
       <p className="text-sm font-semibold"></p>
