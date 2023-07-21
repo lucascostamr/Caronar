@@ -17,6 +17,10 @@ function Statistic2({ ...props }) {
         label: "Mulheres",
         data: ["0", "22", "2"],
       },
+      {
+        label: "Total",
+        data: ["2", "45", "2"],
+      },
     ],
   };
 

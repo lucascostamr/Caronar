@@ -14,11 +14,11 @@ function Statistic4({ ...props }) {
         data: ["3", "3", "4", "1", "0", "0", "1"],
       },
       {
-        label: "Todos",
+        label: "Média Geral",
         data: ["2.26", "1.62", "1.53", "1.28", "1.17", "1.36", "1.57"],
       },
       {
-        label: "Homens",
+        label: "Média dos Homens",
         data: ["2.19", "1.57", "1.47", "1.17", "1.25","1.44","1.39"],
         type: "line",
       },
@@ -32,7 +32,7 @@ function Statistic4({ ...props }) {
   };
   return (
     <div className={`widgetCard p-3 md:py-4 md:px-6 ${props.className}`}>
-      <h1 className="text-medium font-semibold pb-4">Motoristas disponíveis</h1>
+      <h1 className="text-medium font-semibold pb-4">Corridas </h1>
       <div className="">
         <Bar data={data} options={options} />
       </div>
