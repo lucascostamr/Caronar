@@ -1,80 +1,260 @@
--- Informações do motorista específico
-SELECT * FROM motorista 
-WHERE CNHmotorista = 'cnh1';
-
--- Top motoristas (geral)
-select nome, classificacao from motorista
-order by Classificacao desc;
-
--- Mostrar todas as viagens ativas
-SELECT Data, Hora, Destino, Origem, Preco, Vagas,duracao
-FROM viagem
-WHERE ativo = 1;
-
-
--- Mostrar os carros de cada Motorista
-SELECT m.nome, c.placa
-FROM motorista AS m
-JOIN carro AS c ON m.CNHmotorista = c.idMotorista;
-
--- Número de corridas em cada mês de determinado motorista
-SELECT YEAR(viagem.Data) AS Ano, MONTH(viagem.Data) AS Mes, COUNT(*) AS NumeroCorridas
-FROM viagem
-JOIN motorista ON viagem.idMotorista = motorista.CNHmotorista
-WHERE motorista.CNHmotorista = 'cnh1'
-GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
-ORDER BY Mes;
-
-
--- Histórico de viagens do passageiro
-SELECT v.Data, v.Hora, v.Origem, v.Destino, m.Nome AS NomeMotorista, v.Preco
-FROM viagem AS v
-JOIN realiza AS r ON r.ViagemID = v.ViagemID
-JOIN motorista AS m ON m.CNHmotorista = v.idMotorista
-WHERE r.CPF = '000.000.000-01'
-limit 30;
-
--- Passageiros que realizaram viagens em cidades diferentes da sua cidade de origem
-SELECT distinct(Nome)
-FROM passageiro p
-INNER JOIN realiza r ON p.CPF = r.CPF
-INNER JOIN viagem v ON r.ViagemID = v.ViagemID
-INNER JOIN endereco e ON p.CPF = e.idPassageiro
-WHERE v.Origem <> e.Cidade;
-
-
--- Top 5 motoristas (considerando apenas os que possuem viagens acima da média)
-SELECT  m.Nome, e.Cidade, m.Classificacao, COUNT(v.ViagemID) AS NumeroCorridas
-FROM motorista AS m
-LEFT JOIN viagem AS v ON m.CNHmotorista = v.idMotorista
-LEFT JOIN endereco AS e ON m.CNHmotorista = e.idMotorista
-GROUP BY m.CNHmotorista, m.Nome, e.Cidade
-HAVING COUNT(v.ViagemID) > (
-  SELECT AVG(NumeroCorridas)
-  FROM (
-	SELECT COUNT(ViagemID) AS NumeroCorridas
-	FROM motorista AS m
-	LEFT JOIN viagem AS v ON m.CNHmotorista = v.idMotorista
-	GROUP BY m.CNHmotorista
-	) AS subconsulta
-)
-ORDER BY Classificacao desc, NumeroCorridas DESC
-limit 5;
-
-
--- Imagem de Perfil de determinado motorista
-SELECT nome, classificacao, ImagemPerfil
-FROM motorista
-WHERE CNHmotorista = 'cnh1';
-
--- Média de corrida em cada mês
-SELECT YEAR(Data) AS Ano, MONTH(Data) AS Mes,  COUNT(*) AS NumeroCorridas
+-- Total de corridas em cada Mês
+-- Retorna o número de corridas realizadas em cada mês,
+-- agrupado por ano e mês,
+-- com base nos dados da tabela "viagem". A contagem é ordenada pelo ano e mês.
+SELECT
+    YEAR(Data) AS Ano,
+    MONTH(Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
 FROM viagem
 GROUP BY YEAR(Data), MONTH(Data)
 ORDER BY Ano, Mes;
 
+SELECT
+    Ano,
+    Mes,
+    NumeroCorridas
+FROM (
+    SELECT
+        YEAR(Data) AS Ano,
+        MONTH(Data) AS Mes,
+        COUNT(*) AS NumeroCorridas
+    FROM viagem
+    GROUP BY YEAR(Data), MONTH(Data)
+) AS Subconsulta
+GROUP BY Ano, Mes
+ORDER BY Ano, Mes;
+
+
+-- Quantidade de viagens por cidade de origem
+-- Essa consulta mostra o total de viagens agrupadas
+-- por cidade de origem, utilizando a tabela "viagem".
+SELECT
+    origem AS Cidade,
+    COUNT(*) AS TotalViagens
+FROM viagem
+GROUP BY Cidade;
+
+SELECT
+    v1.Cidade,
+    v2.TotalViagens
+FROM (
+    SELECT DISTINCT origem AS Cidade
+    FROM viagem
+) AS v1
+JOIN (
+    SELECT origem AS Cidade, COUNT(*) AS TotalViagens
+    FROM viagem
+    GROUP BY origem
+) AS v2 ON v1.Cidade = v2.Cidade;
+
+
+
+
+-- Valor médio do preço da carona
+SELECT
+    YEAR(Data) AS Ano,
+    MONTH(Data) AS Mes,
+    COUNT(*) AS QuantidadeViagens,
+    AVG(Preco) AS ValorMedio
+FROM viagem
+GROUP BY YEAR(Data), MONTH(Data)
+ORDER BY Mes;
+
+SELECT
+    Ano,
+    Mes,
+    QuantidadeViagens,
+    ValorMedio
+FROM (
+    SELECT
+        YEAR(Data) AS Ano,
+        MONTH(Data) AS Mes,
+        COUNT(*) AS QuantidadeViagens,
+        SUM(Preco) / COUNT(*) AS ValorMedio
+    FROM viagem
+    GROUP BY YEAR(Data), MONTH(Data)
+) AS Subconsulta
+ORDER BY Mes;
+
+-- ------------------------------------------------
+-- Mostrar os carros de cada Motorista
+-- Exibe os nomes dos motoristas e as placas dos carros associados a cada um deles,
+-- com base nos dados das tabelas "motorista" e "carro".
+SELECT
+    m.nome,
+    c.placa
+FROM motorista AS m
+JOIN carro AS c ON m.CNHmotorista = c.idMotorista;
+
+SELECT
+    m.nome as Motorista,
+    c.placa
+FROM
+    motorista AS m,
+    carro AS c
+WHERE
+    m.CNHmotorista = c.idMotorista;
+
+-- Número de corridas em cada mês de determinado motorista
+-- A consulta retorna o número de corridas que um
+-- determinado motorista (identificado pela CNH) realizou em cada mês.
+-- Os resultados são agrupados por ano e mês e ordenados pelo mês.
+-- Número de corridas em cada mês de determinado motorista
+SELECT
+    YEAR(viagem.Data) AS Ano,
+    MONTH(viagem.Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
+FROM viagem
+JOIN motorista ON viagem.idMotorista = motorista.CNHmotorista
+WHERE motorista.CNHmotorista = 'cnh36'
+GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+ORDER BY Mes;
+
+SELECT
+    YEAR(viagem.Data) AS Ano,
+    MONTH(viagem.Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
+FROM
+    viagem,
+    motorista
+WHERE
+    viagem.idMotorista = motorista.CNHmotorista
+    AND motorista.CNHmotorista = 'cnh36'
+GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+ORDER BY Mes;
+
+
+
+-- Média de viagens por mês da agregação de todos os passageiros
+-- Essa consulta calcula a média de viagens por mês considerando todas as viagens
+SELECT
+    YEAR(v.Data) AS Ano,
+    MONTH(v.Data) AS Mes,
+    COUNT(*) / COUNT(DISTINCT r.CPF) AS MediaViagens
+FROM viagem AS v
+JOIN realiza AS r ON r.ViagemID = v.ViagemID
+GROUP BY YEAR(v.Data), MONTH(v.Data)
+ORDER BY Ano, Mes;
+
+SELECT
+    Ano,
+    Mes,
+    SUM(QuantidadeViagens) / COUNT(DISTINCT CPF) AS MediaViagens
+FROM (
+    SELECT
+        YEAR(v.Data) AS Ano,
+        MONTH(v.Data) AS Mes,
+        r.CPF,
+        COUNT(*) AS QuantidadeViagens
+    FROM
+        viagem AS v
+    JOIN
+        realiza AS r ON r.ViagemID = v.ViagemID
+    GROUP BY
+        YEAR(v.Data), MONTH(v.Data), r.CPF
+) AS TabelaAuxiliar
+GROUP BY
+    Ano, Mes
+ORDER BY
+    Ano, Mes;
+
+
+-- --------------------------------------------------------
+
+-- Passageiros que realizaram viagens em cidades diferentes da sua cidade de origem
+-- Lista os nomes dos passageiros que realizaram viagens em cidades diferentes
+-- de suas cidades. É baseada nas tabelas "passageiro", "realiza", "viagem" e "endereco".
+SELECT DISTINCT(Nome)
+FROM passageiro p
+JOIN realiza r ON p.CPF = r.CPF
+JOIN viagem v ON r.ViagemID = v.ViagemID
+JOIN endereco e ON p.CPF = e.idPassageiro
+WHERE v.Origem <> e.Cidade;
+
+
+SELECT DISTINCT p.Nome
+FROM passageiro p, endereco e, viagem v, realiza r
+WHERE p.CPF = r.CPF
+AND r.ViagemID = v.ViagemID
+AND p.CPF = e.idPassageiro
+AND v.Origem <> e.Cidade;
+
+
+-- Histórico do Passageiro
+-- Mostra o histórico de viagens (data, hora, origem, destino, nome do motorista e preço) de
+-- um pasageiro específico (identificado pelo CPF).
+-- Os resultados são limitados a 30 registros para não sobrecarregar o site
+-- 
+SELECT
+    v.Data,
+    v.Hora,
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    v.Preco
+FROM viagem AS v
+JOIN realiza AS r ON r.ViagemID = v.ViagemID
+JOIN motorista AS m ON m.CNHmotorista = v.idMotorista
+WHERE r.CPF = '000.000.000-01'
+LIMIT 30; 
+
+SELECT
+    v.Data,
+    v.Hora,
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    v.Preco
+FROM viagem AS v, realiza AS r, motorista AS m
+WHERE r.ViagemID = v.ViagemID
+AND m.CNHmotorista = v.idMotorista
+AND r.CPF = '000.000.000-01'
+LIMIT 30;
+
+-- Histórico do MOTORISTA
+-- Mostra o histórico de viagens (data, hora, origem, destino, nome do motorista e preço) de
+-- um MOTORISTA específico (identificado pelo CNH).
+-- Os resultados são limitados a 30 registros para não sobrecarregar o site
+-- 
+SELECT
+    v.Data,
+    v.Hora,
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    v.Preco
+FROM viagem AS v
+JOIN realiza AS r ON r.ViagemID = v.ViagemID
+JOIN motorista AS m ON m.CNHmotorista = v.idMotorista
+WHERE v.idMotorista = "CNH36"
+LIMIT 30;
+
+
+SELECT
+    v.Data,
+    v.Hora,
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    v.Preco
+FROM viagem AS v, realiza AS r, motorista AS m
+WHERE r.ViagemID = v.ViagemID
+AND m.CNHmotorista = v.idMotorista
+AND v.idMotorista = "CNH36"
+LIMIT 30;
+
+
+
 -- Número de corrida em cada mês de determinado passageiro
-SELECT p.Nome, YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) AS NumeroCorridas
+-- Retorna o número de corridas realizadas por um determinado passageiro
+-- (identificado pelo CPF) em cada mês. Os resultados são agrupados por ano e mês
+-- e ordenados pelo ano.
+SELECT
+    p.Nome,
+    YEAR(v.Data) AS Ano,
+    MONTH(v.Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
 FROM passageiro p
 JOIN realiza r ON p.CPF = r.CPF
 JOIN viagem v ON r.ViagemID = v.ViagemID
@@ -82,56 +262,208 @@ WHERE p.CPF = '000.000.000-01'
 GROUP BY p.CPF, p.Nome, YEAR(v.Data), MONTH(v.Data)
 ORDER BY Ano, Mes;
 
--- Media de viagens por mes da agregação de todos os passageiros
-SELECT YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) / COUNT(DISTINCT r.CPF) AS MediaViagens
-FROM viagem AS v
-JOIN realiza AS r ON r.ViagemID = v.ViagemID
-GROUP BY YEAR(v.Data), MONTH(v.Data)
+SELECT
+    p.Nome,
+    YEAR(v.Data) AS Ano,
+    MONTH(v.Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
+FROM passageiro p, realiza r, viagem v
+WHERE p.CPF = r.CPF
+AND r.ViagemID = v.ViagemID
+AND p.CPF = '000.000.000-01'
+GROUP BY p.CPF, p.Nome, YEAR(v.Data), MONTH(v.Data)
 ORDER BY Ano, Mes;
 
 
--- Media de viagens por mes da agregação de todos os passageiros do sexo F
-SELECT YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) / COUNT(DISTINCT r.CPF) AS MediaViagens
-FROM viagem AS v
-JOIN realiza AS r ON r.ViagemID = v.ViagemID
-JOIN passageiro AS p ON p.CPF = r.CPF
-WHERE p.Sexo = 'F'
-GROUP BY YEAR(v.Data), MONTH(v.Data)
-ORDER BY Ano, Mes;
 
--- Media de viagens por mes da agregação de todos os passageiros do sexo m
-SELECT YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) / COUNT(DISTINCT r.CPF) AS MediaViagens
-FROM viagem AS v
-JOIN realiza AS r ON r.ViagemID = v.ViagemID
-JOIN passageiro AS p ON p.CPF = r.CPF
-WHERE p.Sexo = 'M'
-GROUP BY YEAR(v.Data), MONTH(v.Data)
-ORDER BY Ano, Mes;
+-- -----------------------------------------------------------------
 
--- Total de motoristas por cidade
-SELECT Endereco.Cidade,
-  SUM(CASE WHEN Motorista.Sexo = 'F' THEN 1 ELSE 0 END) AS NumeroMotoristasFeminino,
-  SUM(CASE WHEN Motorista.Sexo = 'M' THEN 1 ELSE 0 END) AS NumeroMotoristasMasculino
-FROM  motorista AS Motorista
-JOIN  endereco AS Endereco ON Motorista.CNHmotorista = Endereco.idMotorista
-GROUP BY Endereco.Cidade;
 
--- total de corridas por origem
-SELECT Origem, COUNT(*) AS TotalCorridas
-FROM viagem
-GROUP BY Origem;
-  
+-- Top 5 motoristas
+-- Essa consulta exibe os cinco melhores motoristas com base no número de corridas realizadas,
+-- considerando apenas aqueles cujo número de corridas está acima da média geral de corridas
+-- realizadas por motoristas. Os resultados são ordenados pela classificação do motorista
+-- e pelo número de corridas.
+SELECT
+    m.Nome,
+    e.Cidade,
+    m.Classificacao,
+    COUNT(v.ViagemID) AS NumeroCorridas
+FROM motorista AS m
+LEFT JOIN viagem AS v ON m.CNHmotorista = v.idMotorista
+LEFT JOIN endereco AS e ON m.CNHmotorista = e.idMotorista
+GROUP BY m.CNHmotorista, m.Nome, e.Cidade
+HAVING COUNT(v.ViagemID) > (
+    SELECT AVG(NumeroCorridas)
+    FROM (
+        SELECT COUNT(ViagemID) AS NumeroCorridas
+        FROM motorista AS m
+        LEFT JOIN viagem AS v ON m.CNHmotorista = v.idMotorista
+        GROUP BY m.CNHmotorista
+    ) AS subconsulta
+)
+ORDER BY Classificacao DESC, NumeroCorridas DESC
+LIMIT 5;
 
--- media de viagens por mes de todos os motoristas
-SELECT YEAR(Data) AS Ano, MONTH(Data) AS Mes, COUNT(*) / COUNT(DISTINCT idMotorista) AS MediaViagens
-FROM viagem
-GROUP BY YEAR(Data), MONTH(Data)
-ORDER BY Ano, Mes;
 
--- media de viagens por mes de todos os motoristas homens
-SELECT YEAR(v.Data) AS Ano, MONTH(v.Data) AS Mes, COUNT(*) / COUNT(DISTINCT v.idMotorista) AS MediaViagens
+SELECT
+    m.Nome,
+    e.Cidade,
+    m.Classificacao,
+    COUNT(v.ViagemID) AS NumeroCorridas
+FROM motorista AS m, viagem AS v, endereco AS e
+WHERE m.CNHmotorista = v.idMotorista
+AND m.CNHmotorista = e.idMotorista
+GROUP BY m.CNHmotorista, m.Nome, e.Cidade, m.Classificacao
+HAVING COUNT(v.ViagemID) > (
+    SELECT AVG(NumeroCorridas)
+    FROM (
+        SELECT COUNT(ViagemID) AS NumeroCorridas
+        FROM motorista AS m, viagem AS v
+        WHERE m.CNHmotorista = v.idMotorista
+        GROUP BY m.CNHmotorista
+    ) AS subconsulta
+)
+ORDER BY m.Classificacao DESC, NumeroCorridas DESC
+LIMIT 5;
+
+-- Media de classificação por marca de Carro
+SELECT c.Marca, AVG(m.Classificacao) AS MediaClassificacao
+FROM carro c
+JOIN motorista m ON c.idMotorista = m.CNHmotorista
+GROUP BY c.Marca
+ORDER BY MediaClassificacao DESC;
+
+SELECT c.Marca, AVG(m.Classificacao) AS MediaClassificacao
+FROM carro c, motorista m
+WHERE c.idMotorista = m.CNHmotorista
+GROUP BY c.Marca
+ORDER BY MediaClassificacao DESC;
+
+
+-- Viagens ativas Motorista
+SELECT
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    c.Modelo AS ModeloCarro,
+    m.Classificacao,
+    v.Preco,
+    v.Data,
+    v.Hora
 FROM viagem AS v
 JOIN motorista AS m ON v.idMotorista = m.CNHmotorista
-WHERE m.Sexo = 'M'
-GROUP BY YEAR(v.Data), MONTH(v.Data)
-ORDER BY Ano, Mes;
+JOIN carro AS c ON m.CarroAtual = c.Placa
+WHERE v.ativo = 1
+AND m.CNHmotorista = "CNH36"
+LIMIT 10;
+
+SELECT
+    v.Origem,
+    v.Destino,
+    m.Nome AS NomeMotorista,
+    c.Modelo AS ModeloCarro,
+    m.Classificacao,
+    v.Preco,
+    v.Data,
+    v.Hora
+FROM viagem AS v, motorista AS m, carro AS c
+WHERE v.idMotorista = m.CNHmotorista
+AND m.CarroAtual = c.Placa
+AND v.ativo = 1
+AND m.CNHmotorista = "CNH36"
+LIMIT 10;
+
+
+
+
+
+
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+
+
+
+
+-- Média de viagens por mês da agregação de todos os motoristas 
+SELECT 
+  Ano,
+  Mes,
+  AVG(TotalViagensPorMotorista) AS MediaViagensPorMotorista
+FROM (
+  SELECT 
+    YEAR(Data) AS Ano,
+    MONTH(Data) AS Mes,
+    idMotorista,
+    COUNT(*) AS TotalViagensPorMotorista
+  FROM bdcarona.viagem
+  GROUP BY YEAR(Data), MONTH(Data), idMotorista
+) AS viagens_por_motorista
+GROUP BY Ano, Mes
+ORDER BY Ano, Mes;
+
+-- Média de viagens por mês da agregação de todos os passageiros do sexo Feminino 
+SELECT
+    YEAR(v.Data) AS Ano,
+    MONTH(v.Data) AS Mes,
+    COUNT(*) / COUNT(DISTINCT r.CPF) AS MediaViagens
+FROM
+    viagem AS v
+JOIN
+    realiza AS r ON r.ViagemID = v.ViagemID
+JOIN
+    passageiro AS p ON p.CPF = r.CPF
+WHERE
+    p.Sexo = 'F'
+GROUP BY
+    YEAR(v.Data),
+    MONTH(v.Data)
+ORDER BY
+    Ano,
+    Mes;
+
+
+-- Número de corridas do motorista
+SELECT
+    YEAR(viagem.Data) AS Ano,
+    MONTH(viagem.Data) AS Mes,
+    COUNT(*) AS NumeroCorridas
+FROM viagem
+JOIN motorista ON viagem.idMotorista = motorista.CNHmotorista
+WHERE motorista.CNHmotorista = "CNH36"
+GROUP BY YEAR(viagem.Data), MONTH(viagem.Data)
+ORDER BY Mes;
+
+-- Motoristas disponíveis por cidade e sexo
+SELECT 
+  e.Cidade,
+  COUNT(*) AS TotalMotoristas,
+  SUM(IF(m.sexo = 'M', 1, 0)) AS QuantidadeHomens,
+  SUM(IF(m.sexo = 'F', 1, 0)) AS QuantidadeMulheres
+FROM bdcarona.motorista AS m
+JOIN bdcarona.endereco AS e ON m.CNHmotorista = e.idMotorista
+GROUP BY e.Cidade;
+
+-- Quantidade de viagens por cidade de origem
+SELECT
+    origem AS Cidade,
+    COUNT(*) AS TotalViagens
+FROM viagem
+GROUP BY Cidade;
+
+-- Motorista disponíveis por cidade e sexo
+SELECT 
+  e.Cidade,
+  COUNT(*) AS TotalMotoristas,
+  SUM(IF(m.sexo = 'M', 1, 0)) AS QuantidadeHomens,
+  SUM(IF(m.sexo = 'F', 1, 0)) AS QuantidadeMulheres
+FROM bdcarona.motorista AS m
+JOIN bdcarona.endereco AS e ON m.CNHmotorista = e.idMotorista
+GROUP BY e.Cidade;
+
